@@ -1,0 +1,49 @@
+Świetnie – zamykamy serię 🔥 **Zadaniem 5/5 z sekcji 2 & 3**.
+To będzie zadanie typowo „produkcyjne” – nie za trudne, ale **z logiczną decyzją**, którą musisz sam podjąć.
+
+---
+
+## 🧩 **ZADANIE 5 – Filtrowanie, agregacja, ale… które pole grupować?**
+
+Masz tabelę: `sales`
+
+| Kolumna       | Typ     |
+| ------------- | ------- |
+| `sale_id`     | INTEGER |
+| `region`      | TEXT    |
+| `salesperson` | TEXT    |
+| `amount`      | NUMERIC |
+
+---
+
+### 🔧 Treść zadania:
+
+> Zwróć listę regionów (`region`), w których:
+>
+> * łączna wartość sprzedaży (`SUM(amount)`) przekroczyła **50 000**,
+> * **i** pracowało w nich **co najmniej 3 różnych sprzedawców (`salesperson`)**.
+>
+> Dodatkowo w wyniku pokaż:
+>
+> * nazwę regionu
+> * liczbę unikalnych sprzedawców
+> * sumę sprzedaży
+
+---
+
+### 📌 Zakres dozwolony:
+
+* `SELECT`, `GROUP BY`, `HAVING`
+* możesz używać `COUNT(DISTINCT ...)`, `SUM(...)`, itp.
+
+---
+
+## 🧠 Kluczowe pytanie (nie dostajesz podpowiedzi!):
+
+* **Po czym grupujesz?**
+* **Jak liczysz unikalnych sprzedawców w każdym regionie?**
+
+select region,count(distinct(salesperson)), sum(amount) from sales
+group by region
+having count(distinct(salesperson)) >= 3 AND sum(amount) > 50000
+

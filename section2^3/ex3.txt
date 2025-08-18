@@ -1,0 +1,41 @@
+
+
+---
+
+## 🧩 **ZADANIE 3 – Warunek liczbowy + LIKE + agregacja**
+
+Masz tabelę: `employees`
+
+| Kolumna       | Typ     |
+| ------------- | ------- |
+| `employee_id` | INTEGER |
+| `department`  | TEXT    |
+| `salary`      | NUMERIC |
+| `position`    | TEXT    |
+
+---
+
+### 🔧 Treść zadania:
+
+> Napisz zapytanie, które zwróci **działy (`department`)**,
+> w których pracują tylko pracownicy, których stanowisko (`position`) zawiera słowo `'Manager'`,
+> **i** w których średnie wynagrodzenie (`AVG(salary)`) przekracza **8000**.
+>
+> Zwróć:
+>
+> * nazwę działu (`department`)
+> * liczbę managerów (`COUNT(*)`)
+> * średnią pensję (`AVG(salary)`)
+
+📌 Możesz użyć: `SELECT`, `WHERE`, `LIKE`, `GROUP BY`, `HAVING`
+📌 Zwróć uwagę, że `LIKE '%Manager%'` to filtr tekstowy w `WHERE`
+
+---
+
+SELECT department,
+       COUNT(*) AS manager_count,
+       AVG(salary) AS avg_salary
+FROM employees
+WHERE position LIKE '%Manager%'
+GROUP BY department
+HAVING AVG(salary) > 8000;

@@ -1,0 +1,89 @@
+
+
+---
+
+### 🔢 PYTANIA 1–35
+
+1. **Czym różni się `WHERE` od `HAVING`?** Podaj przykład, w którym wynik zależy od użycia jednego lub drugiego.
+	where rozni sie od having ze where filtruje dane przed grupowaniem a having dziala tylko na grupkach lub funkacj agregacyjnych
+2. **Kiedy `DISTINCT` nie zmienia wyniku zapytania?** Podaj przykład.
+	Distinct nie zmienia wyniku zapytania przy tym jak jest grupwanie
+3. **Czy `WHERE` może używać warunku z funkcją agregującą?** Co się wtedy stanie?
+	Nie mozna, wsytapi blad.
+4. **Co zwróci `COUNT(*)` dla pustej tabeli?** A `COUNT(column_name)`?
+	 zwroca to samo, 0 I 0
+5. **Czy `GROUP BY` może działać bez żadnej funkcji agregującej?** Jeśli tak – po co?
+	Tak moze dzialac bez fukncji agregujacej, chociazby po to zeby znalezc unikalne wartosci
+6. **Jaka jest różnica między `IN (...)` a `= ANY (...)`?** Czy zawsze są równoważne?
+miedzy in a = any nie ma roznicy poniewaz in to tak jakby equality compariser, nie zawsze sa rownowazne bo any
+umozliwia uzycie innych operatorow
+7. **Co się stanie, jeśli w `ORDER BY` podasz numer kolumny (np. `ORDER BY 2`)?**
+	posortuje po drugiej kolumnie z selecta
+8. **Czy `BETWEEN` zawiera wartości graniczne?** Podaj konkretny przypadek.
+nie wiem powiedz mi
+9. **Jak działa `LIMIT` w zapytaniach z `ORDER BY`?** Kiedy może zwrócić "błędny" rekord?
+	no dziala jako cos co moze nam dac top x values lub bottom x values. zwroci bledny rekord gdy za duzo 
+	wartosci jest takich samych
+10. **Czym się różni `LIKE 'A%'` od `LIKE '%A%'`?** Kiedy ich użycie daje to samo?
+	rozni sie tym ze pierwsze porownuje dane texty zaczynajac od A I reszta slowa, a drugie szuka
+slow ktore maja a jakby w srodku. ich uzycie daje to samo gdy cos zaczyna sie od A
+11. **Napisz zapytanie, które zwraca nazwy miast z tabeli `customers`, ale tylko unikalne.**
+	select distinct cities from customers
+12. **W jakiej kolejności SQL przetwarza klauzule `SELECT`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`?**
+	WHERE - GROUP BY - HAVING - SELECT - ORDER BY
+13. **Co oznacza `NULL` w kontekście `WHERE` i `HAVING`?** Jakie mogą być pułapki?
+	No to znaczy ze null nie spelnia danego warunku w where oraz having. nie wiem jakie moga byc pulapki
+14. **Napisz zapytanie, które zwróci 5 klientów z największą liczbą zamówień.**
+	Select distinct clients,count(orders) from table
+	order by count(orders) desc
+	limit 5 
+15. **Czy `HAVING` może działać bez `GROUP BY`?** Jeśli tak – co oznacza?
+	Moze zadzialac, oznacza to ze having dziala na funkcjach agregujacych
+16. **Jak działa `ILIKE`?** Czy `ILIKE 'abc'` znajdzie 'ABC'? W jakich bazach działa?
+	ilike dziala tak ze nie jest case sensitive, dziala tylko w postgres
+17. **Dlaczego `GROUP BY` na kolumnie o unikalnych wartościach nie ma sensu?** Czy to błąd?
+Bo unikalne wartosci to juz jakby sa grupy. nie jest blad ale nie jest to potrzebne
+18. **Co się stanie, jeśli użyjesz `ORDER BY` w kolumnie, której nie ma w `SELECT`?**
+	Zostanie wyrzucony blad ze tak nie mozna
+19. **Jak działa `SELECT DISTINCT city, country FROM customers`?** Kiedy jedno z pól może "fałszywie powtarzać" się?
+	Moze sie powtarzac panstwo no bo w jednym panstwie moze byc wiele miast
+20. **Czy można użyć `LIMIT` bez `ORDER BY`?** Czy wynik będzie przewidywalny?
+nie bedzie przewidywalny.
+21. **Jaka jest różnica między `WHERE price BETWEEN 10 AND 20` a `WHERE price >= 10 AND price <= 20`?**
+	nIE MA ZADnej roznicy, zapytania dzialaja tak somo bo between sprawdza warunki graniczne
+22. **Napisz zapytanie, które pokazuje średnią cenę zamówienia na klienta.**
+	select client,avg(order) from table
+	group by client
+23. **Czy `GROUP BY` może działać na wyrażeniu (np. `GROUP BY YEAR(order_date)`)?**
+	Tak, dziala na datach tez
+24. **Co się stanie, jeśli w `SELECT` użyjesz kolumny, której nie ma w `GROUP BY` i nie jest agregowana?**
+wystapi blad nie mozemy uzyc w groupby kolumny ktorej nier wybralismy w select
+25. **Napisz zapytanie, które zwraca liczbę zamówień z każdego miasta, ale tylko tam, gdzie jest więcej niż 3 zamówienia.**
+	select city,count(orders) from table
+	groupby city
+	having count(orders) > 3
+26. **Jak działa `HAVING COUNT(*) = 0`?** Czy może zwrócić wynik?
+	Moze zwrocic wynik jesli count jest rowny 0. naklada warunek na funkcje agregujaca.
+27. **Czy można użyć `LIKE` z kolumną typu liczbowego?** Co się wtedy dzieje?
+	Mozna uzyc, czemu nie?
+28. **Czy `DISTINCT` działa na pojedynczych kolumnach czy całych wierszach?** Wyjaśnij z przykładem.
+	distinct moze dzialac I na pojedynczych kolumnach i na wierszach calych, tu nie a co wyjasniac
+29. **Napisz zapytanie, które zwróci minimalną i maksymalną cenę w każdej kategorii produktu.**
+	select product,max(cena),min(cena) from table
+	group by product
+30. **Dlaczego `HAVING` nie działa bez `GROUP BY` w niektórych bazach danych?**
+	NIE WIEM, bo taka konstrukcja jest niektorych baz danych?
+31. **Jak działa `ORDER BY COUNT(*) DESC`?** Gdzie najczęściej się tego używa?
+	sortuje wartosci od najwiekszej do najmniejszej. np do liczenia sum sprzedazy jakis
+32. **W jakiej sytuacji `SUM(sales)` może zwrócić `NULL` mimo że tabela nie jest pusta?**
+	kiedy jest zly typ danych?
+33. **Czy `ORDER BY` można używać razem z `GROUP BY`?** Jeśli tak – w jakiej kolejności?
+	order by mozna uzywac z groupby, wystepuje order by po groupby w syntaxie, ale groupby jest pierwsze wykonywane
+34. **Napisz zapytanie, które zwraca średni przychód tylko z zamówień droższych niż 100.**
+	select order,amount,avg(amount) from ordersTable
+	where amount > 100
+	groupby order
+35. **Czy w `HAVING` można użyć aliasu z `SELECT`?** Jeśli nie – dlaczego?
+	poniewaz alias jest wykonywany na sam koniec
+---
+

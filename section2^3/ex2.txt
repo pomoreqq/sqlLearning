@@ -1,0 +1,36 @@
+
+
+---
+
+## 🧩 **ZADANIE 2 – Warunkowe grupowanie + filtrowanie**
+
+Masz tabelę: `products`
+
+| Kolumna      | Typ     |
+| ------------ | ------- |
+| `product_id` | INTEGER |
+| `category`   | TEXT    |
+| `price`      | NUMERIC |
+| `available`  | BOOLEAN |
+
+**Zadanie:**
+
+> Napisz zapytanie, które zwróci **nazwy kategorii produktów (`category`)**,
+> w których znajdują się **co najmniej 3 dostępne produkty (`available = true`)**,
+> i średnia cena (`AVG(price)`) tych dostępnych produktów wynosi **więcej niż 100**.
+>
+> Zwróć w wyniku:
+>
+> * nazwę kategorii
+> * liczbę dostępnych produktów
+> * średnią cenę produktów
+
+📌 Możesz użyć: `SELECT`, `WHERE`, `GROUP BY`, `HAVING`, `COUNT`, `AVG`
+
+---
+
+🎯 Uwaga: musisz najpierw **odfiltrować tylko dostępne produkty**, a potem pogrupować.
+select category,count(available) as productsCount,avg(price) as avgPrice from products
+where available = True
+group by category
+having avg(price) > 100

@@ -1,0 +1,53 @@
+
+---
+
+## 🧩 **ZADANIE 4 – Braki danych + agregacja**
+
+Masz tabelę: `orders`
+
+| Kolumna        | Typ     |
+| -------------- | ------- |
+| `order_id`     | INTEGER |
+| `customer_id`  | INTEGER |
+| `order_status` | TEXT    |
+| `amount`       | NUMERIC |
+
+---
+
+### 🔧 Treść zadania:
+
+> Napisz zapytanie, które zwróci **identyfikatory klientów (`customer_id`)**,
+> którzy **złożyli co najmniej 3 zamówienia**, ale **żadne z ich zamówień nie ma statusu `'cancelled'`**.
+>
+
+>
+> * **łączną liczbę zamówień** (`COUNT(*)`)
+> * **sumę wartości zamówień** (`SUM(amount)`)
+
+---
+
+### 📌 Wymagania:
+
+* użyj `GROUP BY` + `HAVING`
+* potrzebne będzie filtrowanie po statusie (`WHERE`)
+* ale musisz logicznie **wykluczyć klientów, którzy mają choć jedno anulowane zamówienie**
+
+📎 To nie jest `WHERE order_status != 'cancelled'`, bo wtedy możesz **ukryć** fakt, że klient *ma* takie zamówienie.
+
+---
+
+🧠 Podpowiedź (jeśli potrzebna):
+Prawdopodobnie przyda Ci się **`GROUP BY customer_id`**, a potem w `HAVING` warunki typu:
+
+* liczba wszystkich zamówień = `COUNT(*)`
+* liczba anulowanych = `SUM(CASE WHEN ... THEN 1 ELSE 0 END)`
+
+---
+
+SELECT customer_id,
+       COUNT(*) AS order_count,
+       SUM(amount) AS total_value
+FROM orders
+WHERE order_status != 'cancelled'
+GROUP BY customer_id
+HAVING COUNT(*) >= 3;
