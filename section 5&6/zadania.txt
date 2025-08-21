@@ -1,0 +1,340 @@
+🔧 Zadanie 1
+
+Wypisz listę klientów, którzy nie złożyli żadnego zamówienia.
+Masz do dyspozycji tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id)
+
+select c.customer_id, c.name from customers c
+left join orders o on c.customer_id = o.customer_id
+where o.order_id is null
+
+🚀 Zadanie 2
+
+Wypisz najwyższą wartość zamówienia dla każdego klienta, który ma więcej niż jedno zamówienie.
+
+Tabele:
+
+orders(order_id, customer_id, total_amount)
+
+select customer_id, count(*), max(total_amount) from orders
+group by customer_id
+having count(*) > 1
+
+
+🔧 Zadanie 3
+
+Wypisz produkty, które nigdy nie zostały zamówione.
+
+Masz tabele:
+
+products(product_id, product_name)
+
+order_items(order_id, product_id, quantity)
+
+select product_id,product_name from products
+where product_id not in (select product_id from order_items)
+
+SELECT ...
+FROM products p
+WHERE not  EXISTS (
+    SELECT 1
+    FROM order_items oi
+    WHERE oi.product_id = p.product_id
+);
+
+🔧 Zadanie 4: Klienci, którzy złożyli zamówienia tylko w ostatnim miesiącu
+
+Masz tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, order_date)
+
+🔍 Twoim celem jest znalezienie tylko tych klientów, którzy:
+
+mają co najmniej jedno zamówienie,
+
+ale wszystkie ich zamówienia były złożone wyłącznie w ostatnim miesiącu (np. sierpień 2025, jeśli dziś mamy 19.08.2025).
+
+
+SELECT c.customer_id, c.name
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.name
+HAVING 
+    MIN(o.order_date) >= '2025-08-01' AND 
+    MAX(o.order_date) < '2025-09-01' AND 
+    COUNT(*) > 1;
+🔧 Zadanie 5: Aktywni klienci z 3 ostatnich miesięcy
+
+Masz tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, order_date, status)
+
+🎯 Twoje zadanie:
+
+Wypisz klientów, którzy:
+
+mieli co najmniej 2 zamówienia w ostatnich 3 miesiącach (czyli od 2025-06-01 do 2025-08-31),
+
+i wszystkie te zamówienia miały status 'completed'.
+SELECT c.customer_id, c.name
+FROM customers c
+JOIN orders o ON o.customer_id = c.customer_id
+WHERE o.status = 'completed'
+  AND o.order_date >= '2025-06-01'
+  AND o.order_date < '2025-09-01'
+GROUP BY c.customer_id, c.name
+HAVING COUNT(*) >= 2;
+
+🔧 Zadanie 6: Klienci tylko z czerwca
+
+Masz tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, order_date, status)
+
+🎯 Twoje zadanie:
+
+Znajdź klientów, którzy:
+
+złożyli dokładnie 2 zamówienia w czerwcu 2025,
+
+i oba zamówienia miały status 'completed',
+
+nie pokazuj klientów, którzy mieli inne zamówienia poza czerwcem lub z innym statusem.'
+
+select c.customer_id, c.name from customers c
+join orders o on c.customer_id = o.customer_id
+where o.status = 'completed'
+AND Month(order_date) = 6 AND year(order_date) = 2025
+group by c.customer_id, c.name
+having count(*) = 2
+
+
+Zadanie 7: Najaktywniejsi klienci z jednego miesiąca
+
+Masz tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, order_date, total_amount, status)
+
+🎯 Twoje zadanie:
+
+Znajdź klientów, którzy:
+
+w lipcu 2025 złożyli zamówienia na łączną wartość powyżej 10 000 (czyli suma total_amount > 10000),
+
+wszystkie ich zamówienia z tego miesiąca miały status 'completed',
+
+innych zamówień spoza tego zakresu nie musisz brać pod uwagę.
+select c.customer_id, c.name from customers c
+join orders o on c.customer_id = o.customer_id
+where month(order_date) = 7 and year(order_date) = 2025 and o.status = 'completed'
+group by c.customer_id, c.name
+having sum(o.total_amount) > 10000
+
+🔧 Zadanie 8: Klienci z wielu zamówień jednego dnia
+
+Masz tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, order_date, status)
+
+🎯 Twoje zadanie:
+
+Znajdź klientów, którzy:
+
+w jednym konkretnym dniu złożyli więcej niż 2 zamówienia,
+
+i wszystkie te zamówienia miały status 'completed'.
+
+📌 Nie chodzi o cały miesiąc — chodzi o jeden dzień, jakikolwiek, w którym klient był bardzo aktywny.
+
+select distinct c.customer_id, c.name from customers c
+join orders o on c.customer_id = o.customer_id
+WHERE o.status = 'completed'
+group by c.custoer_id,o.order_date, c.name
+having count(*) > 2
+✅ Zadanie 11
+Zwróć 3 klientów z najwyższą średnią wartością zamówień
+(tylko 'completed'), posortuj malejąco.
+
+Tabele: customers, orders
+Kolumny: customer_id, name, total_amount, status
+
+select c.customer_id, c.name, avg(o.total_amount) from c customers
+join orders o on c.customer_id = o.customer_id
+where status = 'completed'
+group by c.customer_id, c.name
+order by avg(o.total_amount) desc
+limit 3
+
+✅ Zadanie 13 (wersja krótka)
+
+Zwróć category, która:
+
+sprzedała się w ≥ 3 regionach
+
+i suma amount > 10000
+
+Tabele:
+
+sales(sale_id, product_id, region, amount)
+
+products(product_id, category)
+
+Posortuj po sumie malejąco.
+
+select p.category, sum(s.amount) from products p
+join sales s on p.product_id = s.product_id
+group by p.category
+having count(distinct s.region) >= 3 AND
+sum(s.amount) > 10000
+order by sum(s.amount) DESC
+
+✅ Zadanie 14 (krótkie)
+
+Zwróć klientów, którzy:
+
+złożyli zamówienia tylko w jednym miesiącu
+
+wszystkie zamówienia były 'completed'
+
+Tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, order_date, status)
+
+Zwróć: customer_id, name
+Sortuj po name.
+
+select c.customer_id, c.name from customers c
+join orders o on c.customer_id = o.customer_id
+where o.status = 'completed'
+group by c.customer_id, c.name
+having count(distinct extract(month from order_date)) = 1
+order by c.name
+
+🎯 Zadanie 15 – GROUP BY bez agregatu
+
+Tabele:
+
+employees(employee_id, department, position, salary)
+
+👉 Polecenie (krótkie):
+
+Zwróć wszystkie unikalne kombinacje department i position występujące w tabeli employees.
+
+Użyj GROUP BY, ale bez żadnej funkcji agregującej.
+
+select deparment,position from employees
+group by department,position
+
+
+🎯 Zadanie 16 – GROUP BY z aliasem
+
+Tabele:
+
+orders(order_id, customer_id, order_date, total_amount)
+select to_char(order_date,'YYYY-MM') as orderDate,sum(total_amount) as sumTotal from orders
+group by to_char(order_date,'YYYY-MM')
+
+🎯 Zadanie 17 – FULL OUTER JOIN
+
+Tabele:
+
+employees(employee_id, name, department_id)
+
+departments(department_id, department_name)
+Zwróć:
+
+wszystkie pary pracowników i nazw działów,
+
+nawet jeśli pracownik nie ma przypisanego działu,
+
+lub dział nie ma żadnych pracowników
+
+SELECT e.employee_id, e.name, d.department_name
+FROM employees e
+FULL OUTER JOIN departments d ON e.department_id = d.department_id
+ORDER BY e.employee_id;
+🎯 Zadanie 18 – JOIN z wykluczeniem (anti-join logic)
+
+Tabele:
+
+products(product_id, product_name)
+
+order_items(order_item_id, product_id)
+
+select p.product_id,p.product_name from p products
+left join order_items oi on oi.product_id = p.product_id
+where oi.product_id is null
+order by p.product_name
+
+🎯 Zadanie 19 – subquery w SELECT
+
+Tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, total_amount)
+
+Zwróć listę klientów wraz z:
+
+ich name,
+
+oraz łączną kwotą wszystkich ich zamówień (jako osobna kolumna).
+
+select c.name, ( select sum(total_amount) from orders o
+Where o.customer_id = c.customer_id) as totalSpent
+from customers c
+
+🎯 Zadanie 20 – subquery w WHERE IN (...)
+
+Tabele:
+
+products(product_id, category)
+
+order_items(order_id, product_id)
+
+select product_id,category from products
+where product_id in(select product_id from order_items)
+order by product_id
+
+
+🎯 Zadanie – JOIN z subquery w FROM
+
+Tabele:
+
+customers(customer_id, name)
+
+orders(order_id, customer_id, status, total_amount)
+
+👉 Polecenie (krótkie):
+
+Zwróć nazwy klientów oraz średnią wartość ich zamówień,
+ale tylko tych ze statusem 'completed'.
+
+Użyj podzapytania z agregacją w FROM, a potem zrób JOIN z customers.
+SELECT 
+  c.customer_id,
+  c.name,
+  o_summary.total
+FROM customers c
+JOIN (
+  SELECT customer_id, SUM(total_amount) AS total
+  FROM orders
+  WHERE status = 'completed'
+  GROUP BY customer_id
+) AS o_summary ON c.customer_id = o_summary.customer_id;
+

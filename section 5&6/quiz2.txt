@@ -1,0 +1,88 @@
+Świetnie – czas na **quiz z sekcji 5 & 6** (czyli: **JOINs + Advanced SQL Commands**)
+Pytania będą kontekstowe, wymagające myślenia – bez powtórek z teorii.
+Nie będą dotyczyły JOIN-syntaxu dosłownie, tylko **logiki, użycia, subtelności i edge-case'ów**.
+Masz przed sobą **📋 35 otwartych pytań** – gotowy?
+
+---
+
+## 📋 Quiz: Sekcja 5 & 6 – JOINs + Advanced SQL (mid+)
+
+1. **Czym się różni INNER JOIN od LEFT JOIN, jeśli w danych nie ma wartości NULL?**
+nie rozni sie niczym, jesli nie ma w danych wartosci null to left join zadziala jak inner join
+
+2. **W jakich przypadkach FULL OUTER JOIN zwraca więcej rekordów niż INNER + LEFT + RIGHT razem?**
+	hmm, hipotetycznie dlatego ze rekordy moga sie dublowac wtedy? jak sie myle wytlumacz mi.
+3. **Co oznacza, że JOIN jest „nienaturalny”? Podaj przykład.**
+	kiedy laczymy dwie tabele nie po id a np po adresach zamieszkania?
+4. **Kiedy RIGHT JOIN daje dokładnie ten sam wynik co LEFT JOIN?**
+	zalozmy w leftjoin mamy table1,table2, kiedy to zamienimy na table2,table1 to left join daje to co rightjoin table1,table2
+5. **Po co stosować aliasy w zapytaniach z JOIN? Jakie problemy rozwiązuje to praktycznie?**
+	poprawia to czytelnosc kodu.
+6. **Czym się różni wynik zapytania z `JOIN ON` od `JOIN USING`?**
+	niczym, jest to syntactic sugar
+7. **Co się stanie, jeśli w `ON` dasz warunek, który nie może być spełniony?**
+	zostanie zwrocona pusta tabela?
+8. **Dlaczego OUTER JOIN może zwrócić kolumny z wartością NULL, mimo że źródłowe tabele jej nie zawierały?**
+	poniewaz moze nie byc wartosci ktore sie matchuja?
+9. **Kiedy UNION i JOIN mogą dawać *pozornie* te same wyniki, ale oznaczać coś zupełnie innego?**
+	szczerze, nie wiem ciezko mi nawet jakas hipoteze ostawic
+10. **Jakie ryzyko niesie ze sobą użycie `SELECT *` w zapytaniu z JOIN?**
+	ze zostanie zwrocone zbyt duzo informacji, oraz spowolni to dzialanie bazy danych
+11. **Jak znaleźć pracowników bez przypisanego działu – mając tabele `employees` i `departments`?**
+	uzyc left join z where clause zeby zwracalo tam gdzie jest null? to moja hipoteza pamietam cos takiego
+	popraw mnie tu
+12. **Czy można JOINować więcej niż dwie tabele naraz? Jeśli tak – co trzeba wiedzieć?**
+	tak mozna, trzeba wiedziec polaczenia tabel np pierwsza z druga a potem druga z trzecia
+13. **Jaka jest różnica między `LEFT JOIN` a `LEFT SEMI JOIN`?**
+	idk nie mam pojecia, left semi join tylko zwraca rekordy ktore maja match?
+14. **Czy można użyć `WHERE` po OUTER JOIN, nie tracąc danych? Jak?**
+	dac w klauzilo where is not null or is null?
+15. **Czy `NATURAL JOIN` jest dobrym pomysłem w praktyce? Dlaczego tak lub nie?**
+	nie wiem co to? czy to jest self join?
+---
+
+## 🔧 Advanced SQL (sekcja 6 – funkcje, subqueries, timestampy)
+
+16. **Po co używać `TO_CHAR(date_column, 'YYYY-MM')` zamiast samej kolumny z datą?**
+	poniewaz upraszcza to nam date, nie ma dni, I timestampi
+
+17. **Co się stanie, jeśli użyjesz `EXTRACT(MONTH FROM date)` w grupowaniu i SELECT jednocześnie?**
+	wystapi blad?
+18. **W jakich przypadkach `EXTRACT` zwróci NULL?**
+	kiedy data jest tekstem
+19. **Jak znaleźć rekordy, w których różnica między dwiema datami przekracza 30 dni?**
+	date1 - date2 > 30
+20. **Czy `SUBQUERY` może stać w miejscu tabeli w `FROM`? Jak to działa?**
+	tak moze stac, no wpierw jest wykonywane subquery ktore zwraca dane kolumny/tabele
+21. **Jak działa `SELF JOIN` i kiedy jest naprawdę przydatny?**
+	jest uzyteczny wtedy kiedy chcemy sprawdzic jakies relacje miedzy dwiema kolumnami, dziala tak ze
+tabela jest joinowana sama ze soba
+22. **Dlaczego aliasowanie subquery jest obowiązkowe?**
+	dlatego zeby mozna bylo rozczytac query
+23. **Napisz przykład, w którym subquery w `WHERE` zwraca wiele wartości – i jest to poprawne.**
+	nie wiem, nawet hipotetycznie
+24. **Czym się różni `WHERE IN (SELECT...)` od `JOIN`?**
+	tez nie wiem,
+25. **Czy można użyć `HAVING` w subquery? W jakiej sytuacji ma to sens?**
+	nie mozna?
+26. **Po co stosować `String Functions` (np. `SUBSTR`, `CONCAT`) w SELECT?**
+	no zeby polaczyc dwie kolumny textowe
+27. **Kiedy `||` działa jako operator konkatenacji, a kiedy jako coś innego?**
+	jako konkatenacji przy dwóch danych tekstowych a kiedy jak cos innego nie wiem
+28. **Czy można używać `ROUND()` na stringu? Co się wtedy dzieje?**
+	nie mozna
+29. **Jak znaleźć klientów, których imię zawiera drugą literę „a”?**
+	where name like '_a%'
+30. **Dlaczego `LOWER(column)` lub `UPPER(column)` warto stosować przy porównaniach tekstowych?**
+	żeby ustandaryzować case kolumn
+31. **Jak działa `CAST()` i kiedy jest niezbędny?**
+	cast powoduje zmiane typu danych, jest niezbędny gdy chcemy ustandaryzować typ danych kolumny
+32. **Czy można użyć funkcji matematycznej (`ABS`, `POWER`, itd.) na NULL? Co się stanie?**
+	zwroci po prostu null ta funkcja
+33. **W jakiej kolejności działa `SELECT`, `FROM`, `JOIN`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`?**
+	1. from 2.join 3.where 4.select 5.groupby 6.having 7.order by
+34. **W jakim przypadku `SELECT * FROM (...)` (subquery) będzie szybsze niż pełne JOIN?**
+	nie mam poijecia
+35. **Dlaczego w subquery z `SELECT MAX(date)` może być potrzebny `GROUP BY`?**
+	nie mam pojecia
+---
