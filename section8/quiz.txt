@@ -1,0 +1,102 @@
+
+
+---
+
+# 📋 Quiz – Sekcja 8: Creating Databases and Tables
+
+1. Jakie są różnice między `CHAR`, `VARCHAR` i `TEXT`?
+róznica tego ile mozetyp danych oprzechowac, char i varchar to do 255 znakow a text 65 tysiecy
+2. Dlaczego wybór odpowiedniego typu danych ma wpływ na wydajność zapytań?
+	ponieważ mniejsze typy danych laduja się szybciej
+3. Czym różni się `INT` od `BIGINT` i kiedy użyć każdego z nich?
+	możliwa wielkoscia zmiennej, big int jest większe niż int, int no to np do numerow telefonu, a bigint do numerow telefonu wraz z moze kierunkowym numerem panstwa
+4. Co oznacza `PRIMARY KEY` i dlaczego może być tylko jeden w tabeli?
+	jest to unikalny indetyfikator rowu w tabeli dlatego moze być tylko jeden
+5. Jak działa `FOREIGN KEY` i jakie są konsekwencje przy usuwaniu rekordów w tabeli nadrzędnej?
+	umozliwia polaczenie z primary key innej tabeli, defakto tworzy relacje miedzy tabelami
+6. Jaka jest różnica między `UNIQUE` a `PRIMARY KEY`?
+primary key jest unikalnym indetyfikatorem każdy row, a unique jest potrzebny do ochrony przed duplikatami
+7. Podaj przykład sytuacji, w której użyjesz `CHECK` constraint.
+	kiedy np. chce od razu tylko żeby w mojej bazie było age > 18.
+8. Co się stanie, jeśli spróbujesz wstawić rekord z kluczem obcym wskazującym na nieistniejący rekord w tabeli nadrzędnej?
+	wystapi blad.
+9. Jakie są różnice między `DELETE`, `TRUNCATE` i `DROP TABLE`?
+drop usuwa tabele, delete usuwa dane rekordy a truncate czysci tabele
+
+10. Czy można usunąć kolumnę z tabeli? Jak to zrobić?
+ALTER TABLE cars
+DROP COLUMN color;
+11. Czym jest domyślna wartość (`DEFAULT`) w tabeli i kiedy jest użyteczna?
+	jest to wartość domyslna która stworzymy no kurde ciezku tu cos powiedzieć, jeśli nie ma wartości domyślnej stoworzonej
+	to zostanie wstawione NULL, jest uzyteczna gdy użytkownik zapomni dodac wartosci
+12. W jaki sposób można dodać nową kolumnę do istniejącej tabeli?
+ALTER TABLE cars
+ADD color VARCHAR(255);
+13. Jak zmienić typ danych kolumny w istniejącej tabeli?
+ALTER TABLE assets
+ALTER COLUMN name TYPE VARCHAR(255);
+14. Co się stanie, jeśli spróbujesz usunąć kolumnę będącą częścią klucza obcego?
+wystapi blad bo trzeba dodac on delete cascade? albo zrzucić coinstrat i dopiero usunąć kolumne
+15. Jak działa klauzula `ON DELETE CASCADE`?
+	usuwa tez te rekordy co sa foreign key w tabeli gdzie sa jako primary key
+16. Czym różni się `ON DELETE SET NULL` od `ON DELETE RESTRICT`?
+nie wiem, on delete set null wstawia nulle w tabeli w której jest jako foreign key jeśli zostały usunięte rekordy z tabeli gdzie jest jako primery key, hmmm jeśli usunięte zostają z nadrzędnej tabeli rowy, to sa usunięte on i wstawione nulle w ich miejsce w tabeli podrzednej
+17. Jak wygląda składnia polecenia `CREATE TABLE`?
+create table xxx ( tu syntax co chcemy stworzyć jakie kolumny itp)
+18. Czy tabela może istnieć bez klucza głównego? Jakie są tego konsekwencje?
+moze istnieć, ale cięższe będzie utrzymywanie jakości danych takiej tabeli
+19. Dlaczego wstawienie danych za pomocą `INSERT` z podaniem wszystkich kolumn może być ryzykowne przy zmianach w schemacie?
+	bo możemy wstawić niewlasciwie typyp danych według poprzedniego schematu. tzn nielwasciwie wartości do niewłaściwego typu danych, wystapic mogą bledy
+20. Jak wygląda polecenie `INSERT` z wieloma rekordami jednocześnie?
+INSERT INTO table1(column1, column2, …)
+VALUES (value1, value2, …);
+21. Czym się różni `INSERT INTO ... VALUES` od `INSERT INTO ... SELECT`?
+insert into values dodajemy jakby nowe wartosci,, a przy inset into select mozemy jakies wartosci z innych tabel dodac do danej tabeli
+22. Jak wygląda polecenie `UPDATE` z warunkiem? Dlaczego `WHERE` jest krytyczne?
+UPDATE table_name
+SET column1 = value1,
+    column2 = value2,
+    ...
+WHERE condition;. bo gdy nie napiszemy where clausule to zostanie zupdatowane wszystkie rowy w tabeli
+23. Co się stanie, jeśli napiszemy `UPDATE` bez `WHERE`?
+jak wyzej to samo.
+24. Jak wygląda polecenie `DELETE` z warunkiem?
+DELETE FROM todos
+WHERE id = 1;
+25. Co się stanie po wykonaniu `DELETE` bez `WHERE`?
+zostana usuniete wszystkie rowy z tabeli
+26. Jak przywrócić przypadkowo usunięte rekordy z tabeli?
+znalezc query ktore doprowadzilo do stworzenia rowa i je zrobic jescze raz?
+27. Czy `ALTER TABLE` może służyć do zmiany constraintów? Jak?
+	no poprostu np. : 
+ALTER TABLE customers
+ADD CONSTRAINT customers_pkey PRIMARY KEY (customer_id);
+28. Jak usunąć constraint z istniejącej tabeli?
+ALTER TABLE your_table DROP CONSTRAINT constraint_name;
+29. W jaki sposób można zmienić nazwę tabeli?
+	ALTER TABLE table_name RENAME TO new_table_name;
+30. Jak wygląda polecenie `DROP TABLE` i jakie są jego skutki?
+DROP TABLE cars; no usuwa dana tabele z bazy danych
+31. Jak sprawdzić, czy tabela istnieje przed próbą jej utworzenia?
+zrobić po prostu select * from xtable; 
+32. Dlaczego wartość `NULL` jest szczególnym przypadkiem przy constraintach?
+nie wiem, hmm bo np dla unique coinstrant null =/= null?
+33. Czy kolumna z `UNIQUE` może zawierać wiele wartości `NULL`?
+tak, moze zawierac
+34. Czym różni się integralność encji od integralności referencyjnej?
+integralność encji odnosi się do tabeli, ze każdy row ma unikalny inedytfikator, a integralność referencyjna odnosi się ro relacji miedzy tabelami
+35. Jakie są konsekwencje braku constraintów w bazie danych?
+no, balagan w bazie danych, brak kontroli nad danymi, relacjami
+36. Jak za pomocą SQL wymusić, aby wartość w kolumnie była zawsze dodatnia? 
+poprszez check zmienna > 0
+37. Co się stanie, jeśli spróbujesz dodać kolumnę `NOT NULL` do tabeli, która już ma dane?
+następne dane dodawane będą przestrzegać tej zasady?
+38. Dlaczego `ALTER TABLE` może być kosztowną operacją w dużych tabelach?
+	ponieważ musi przejść po każdym rowie w dużych tabelach, i to trwa sporo?
+39. Jak działa `DEFAULT` w przypadku `INSERT` bez podania wartości kolumny?
+no dodaje wartość jakas domyslna, lub jeśli nie jest zdefiniowana a kolumna nie ma not null, to doda null
+40. Co oznacza błąd „violates foreign key constraint” i jak go naprawić?
+nie wiem
+
+---
+
